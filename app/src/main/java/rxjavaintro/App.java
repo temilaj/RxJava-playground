@@ -3,12 +3,28 @@
  */
 package rxjavaintro;
 
+import io.reactivex.rxjava3.core.Observable;
+
 public class App {
     public String getGreeting() {
         return "Hello World!";
     }
 
     public static void main(String[] args) {
+        Observable<String> observable = Observable.create(emitter -> {
+            emitter.onNext("clicked once");
+            emitter.onNext("clicked twice");
+            emitter.onNext("clicked thrice");
+        });
+
+        observable.subscribe(item -> {
+            System.out.println(item);
+        }, throwable -> {
+            System.out.println(throwable.getMessage());
+        }, () -> {
+            System.out.println("completed!");
+        });
+
         System.out.println(new App().getGreeting());
     }
 }
