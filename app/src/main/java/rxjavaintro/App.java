@@ -203,19 +203,52 @@ public class App {
          * utlitity operators
          * 
          */
-        System.out.println(Thread.currentThread().getName());
-        observableFactories.rangeObservable
-                .delay(2, TimeUnit.SECONDS)
-                // .timeout(1, TimeUnit.SECONDS)
-                // .subscribeOn(Schedulers.newThread()) // change the thread we produce items
-                // .observeOn(Schedulers.newThread()) // change the thread on which we observe items
-                .map(String::valueOf)
-                .doOnNext(item -> System.out.println("dispose called"))
-                // .doOnDispose(item ->System.out.println("new item recived" + item))
-                .subscribe(item -> {
-                    System.out.println(Thread.currentThread().getName());
-                    System.out.println("item: "+ item);
-                });
+        // System.out.println(Thread.currentThread().getName());
+        // observableFactories.rangeObservable
+        //         .delay(2, TimeUnit.SECONDS)
+        //         // .timeout(1, TimeUnit.SECONDS)
+        //         // .subscribeOn(Schedulers.newThread()) // change the thread we produce items
+        //         // .observeOn(Schedulers.newThread()) // change the thread on which we observe items
+        //         .map(String::valueOf)
+        //         .doOnNext(item -> System.out.println("dispose called"))
+        //         // .doOnDispose(item ->System.out.println("new item recived" + item))
+        //         .subscribe(item -> {
+        //             System.out.println(Thread.currentThread().getName());
+        //             System.out.println("item: "+ item);
+        //         });
+        // new Scanner(System.in).nextLine();
+
+
+
+        /*
+         * error handling operators
+         * 
+         */
+
+        observableFactories.listObserverable
+                    .sorted((item1, item2) -> item2 - item1)
+                    .map(item -> 2/item)
+                    .retry(1)
+                    .subscribe(item -> {
+                        System.out.println("item: "+ item);
+                    }, throwable -> System.out.println(throwable.getMessage()));
+
+        observableFactories.listObserverable
+                    .sorted((item1, item2) -> item2 - item1)
+                    .map(item -> 2/item)
+                    .onErrorReturnItem(-9999)
+                    .subscribe(item -> {
+                        System.out.println("item: "+ item);
+                    });
+
+        observableFactories.listObserverable
+                    .sorted((item1, item2) -> item2 - item1)
+                    .map(item -> 2/item)
+                    .onErrorResumeWith(Observable.just(5,6,7))
+                    .subscribe(item -> {
+                        System.out.println("item: "+ item);
+                    });
+
         new Scanner(System.in).nextLine();
 
             

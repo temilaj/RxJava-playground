@@ -17,7 +17,7 @@ public class ObservableFactories {
 
     public Observable<String> wordsObservable = Observable.just("Hello", "Hi", "Observable", "World!", "Hello!", "Hello");
     public Observable<String> lettersObservable = Observable.just("a", "aa", "bb", "bb", "ccc", "ccc", "bbb", "ccc");
-    private List<Integer> numbers = new ArrayList<>(Arrays.asList(1,2,3));
+    private List<Integer> numbers = new ArrayList<>(Arrays.asList(0,1,2,3));
     public Observable<Integer> listObserverable = Observable.fromIterable(numbers);
 
     public Observable<Integer> rangeObservable = Observable.range(2, 5);
