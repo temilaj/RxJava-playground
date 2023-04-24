@@ -6,7 +6,10 @@ package rxjavaintro;
 import java.util.Scanner;
 
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.core.SingleObserver;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.observables.ConnectableObservable;
 import rxjavaintro.completables.CompletableFactories;
 import rxjavaintro.flowables.Flowables;
@@ -81,30 +84,55 @@ public class App {
         /*
          * hot obserables: new subscribed observers only see data from the point at which they subscribed.
          */
-        ConnectableObservable<Long> connectableObservable = observableFactories.intervalObservable.publish();
+        // ConnectableObservable<Long> connectableObservable = observableFactories.intervalObservable.publish();
 
-        connectableObservable.connect();
+        // connectableObservable.connect();
 
-        connectableObservable.subscribe((item) -> System.out.println(String.format("Observer 1, sec: %s", item)));
+        // connectableObservable.subscribe((item) -> System.out.println(String.format("Observer 1, sec: %s", item)));
        
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        // try {
+        //     Thread.sleep(5000);
+        // } catch (InterruptedException e) {
+        //     // TODO Auto-generated catch block
+        //     e.printStackTrace();
+        // }
+
+        // connectableObservable.subscribe((item) -> System.out.println(String.format("Observer 2, sec: %s", item)));
+
+        // try {
+        //     Thread.sleep(10000);
+        // } catch (InterruptedException e) {
+        //     // TODO Auto-generated catch block
+        //     e.printStackTrace();
+        // }
+
+        // connectableObservable.subscribe((item) -> System.out.println(String.format("Observer 3, sec: %s", item)));
+        // new Scanner(System.in).nextLine();
+
+        /*
+         * Disposing observables with disposables
+         */
+        // Disposable itervalDisposable =  observableFactories.intervalObservable.subscribe(l -> System.out.println(String.format("item: %s", l)));
+
+        // if (itervalDisposable.isDisposed()) {
+        //     System.out.println("itervalDisposable calling dispose");
+        //     itervalDisposable.dispose();
+        // }
+        // new Scanner(System.in).nextLine();
+
+        CompositeDisposable compositeDisposable = new CompositeDisposable();
+        Observer<Integer> disposableObserver = observers.createDisposableObserver(compositeDisposable);
+        observableFactories.rangeObservable.subscribe(disposableObserver);
+        System.out.println(" disposableObserver calling dipose");
+        compositeDisposable.dispose();
+
+        observableFactories.intervalObservable.subscribe(observers.itemResourceObserver);
+        if (observers.itemResourceObserver.isDisposed()) {
+            System.out.println("itemResourceObserver calling dispose");
+            observers.itemResourceObserver.dispose();
         }
-
-        connectableObservable.subscribe((item) -> System.out.println(String.format("Observer 2, sec: %s", item)));
-
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        connectableObservable.subscribe((item) -> System.out.println(String.format("Observer 3, sec: %s", item)));
         new Scanner(System.in).nextLine();
+
 
     }
 }
