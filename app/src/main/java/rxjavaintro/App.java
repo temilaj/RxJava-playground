@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.SingleObserver;
+import io.reactivex.rxjava3.observables.ConnectableObservable;
 import rxjavaintro.completables.CompletableFactories;
 import rxjavaintro.flowables.Flowables;
 import rxjavaintro.observables.ObservableFactories;
@@ -32,9 +33,9 @@ public class App {
 
     public static void main(String[] args) {
         // basicObservable();
-        // ObservableFactories observableFactories = new ObservableFactories();
-        // Observers observers = new Observers();
-        // CompletableFactories completableFactories = new CompletableFactories();
+        ObservableFactories observableFactories = new ObservableFactories();
+        Observers observers = new Observers();
+        CompletableFactories completableFactories = new CompletableFactories();
         Flowables flowables = new Flowables();
 
         // observableFactories.itemObservable.subscribe(observers.itemObserver);
@@ -66,7 +67,44 @@ public class App {
         
         // flowables.synchronousObservableExample();
         // flowables.asyncObservableExample();
-        flowables.asyncFlowableExample();
+        // flowables.asyncFlowableExample();
+
+
+        // /*
+        //  * cold obserables: each subscribed obsercer sees all the data emitted by the obserable
+        //  */
+        // observableFactories.itemObservable.subscribe((item) -> System.out.println(String.format("Observer 1 - %s ", item)));
+        // observableFactories.itemObservable.subscribe((item) -> System.out.println(String.format("Observer 2 - %s ", item)));
+        // observableFactories.itemObservable.subscribe((item) -> System.out.println(String.format("Observer 3 - %s ", item)));
+
+
+        /*
+         * hot obserables: new subscribed observers only see data from the point at which they subscribed.
+         */
+        ConnectableObservable<Long> connectableObservable = observableFactories.intervalObservable.publish();
+
+        connectableObservable.connect();
+
+        connectableObservable.subscribe((item) -> System.out.println(String.format("Observer 1, sec: %s", item)));
+       
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        connectableObservable.subscribe((item) -> System.out.println(String.format("Observer 2, sec: %s", item)));
+
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        connectableObservable.subscribe((item) -> System.out.println(String.format("Observer 3, sec: %s", item)));
+        new Scanner(System.in).nextLine();
 
     }
 }

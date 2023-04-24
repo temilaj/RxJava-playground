@@ -8,17 +8,18 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.observables.ConnectableObservable;
 import rxjavaintro.utils.Util;
 
 public class ObservableFactories {
 
-    public Observable<String> itemObservable = Observable.just("item1", "item2");
+    public Observable<String> itemObservable = Observable.just("item 1", "item 2", "item 3");
 
     private List<Integer> numbers = new ArrayList<>(Arrays.asList(1,2,3));
     public Observable<Integer> listObserverable = Observable.fromIterable(numbers);
 
     public Observable<Integer> rangeObservable = Observable.range(2, 5);
-    // public Observable<Long> intervalObservable = Observable.interval(1, TimeUnit.SECONDS);
+    public Observable<Long> intervalObservable = Observable.interval(1, TimeUnit.SECONDS);
     public Observable<Long> timerObservable = Observable.timer(5, TimeUnit.SECONDS);
 
 
