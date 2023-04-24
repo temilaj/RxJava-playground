@@ -13,6 +13,7 @@ import rxjavaintro.utils.Util;
 
 public class ObservableFactories {
 
+    public Observable<String> hellowObservable = Observable.just("Hello World!");
     public Observable<String> itemObservable = Observable.just("item 1", "item 2", "item 3");
 
     public Observable<String> wordsObservable = Observable.just("Hello", "Hi", "Observable", "World!", "Hello!", "Hello");

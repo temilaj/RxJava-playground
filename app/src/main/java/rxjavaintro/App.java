@@ -179,18 +179,18 @@ public class App {
 
 
 
-        subjectFactories.numbersAsyncSubject.subscribe(item -> System.out.println("Person 1 listening to song number: "+ item));
-        subjectFactories.numbersAsyncSubject.onNext(1);
-        subjectFactories.numbersAsyncSubject.onNext(2);
-        subjectFactories.numbersAsyncSubject.onNext(3);
-        subjectFactories.numbersAsyncSubject.subscribe(item -> System.out.println("Person 2 listening to song number: "+ item));
-        subjectFactories.numbersAsyncSubject.onNext(4);
+        // subjectFactories.numbersAsyncSubject.subscribe(item -> System.out.println("Person 1 listening to song number: "+ item));
+        // subjectFactories.numbersAsyncSubject.onNext(1);
+        // subjectFactories.numbersAsyncSubject.onNext(2);
+        // subjectFactories.numbersAsyncSubject.onNext(3);
+        // subjectFactories.numbersAsyncSubject.subscribe(item -> System.out.println("Person 2 listening to song number: "+ item));
+        // subjectFactories.numbersAsyncSubject.onNext(4);
 
-        subjectFactories.numbersAsyncSubject.onComplete();
+        // subjectFactories.numbersAsyncSubject.onComplete();
 
         
 
-        new Scanner(System.in).nextLine();
+        // new Scanner(System.in).nextLine();
 
 
         
@@ -219,8 +219,11 @@ public class App {
         //             .switchIfEmpty(Observable.just(1,2,3))
         //             .subscribe(item -> System.out.println("value: "+ item));
 
+
         /*
-         * transforming operators
+         *  =============================================
+         *  transforming operators
+         *  =============================================
          */
         // observableFactories.rangeObservable
         //         .sorted()
@@ -242,9 +245,13 @@ public class App {
         //         .subscribe(item -> System.out.println("item: "+ item));
 
 
+
+
+
         /*
-         * combining operators
-         * 
+         *  =============================================
+         *  combining operators
+         *  =============================================
          */
         // observableFactories.rangeObservable
         //         .mergeWith(Observable.just(100, 200, 300))
@@ -258,9 +265,12 @@ public class App {
         //         .subscribe(item -> System.out.println("item: "+ item));
 
         
+
+
         /*
-         * utlitity operators
-         * 
+         *  =============================================
+         *  utlitity operators
+         *  =============================================
          */
         // System.out.println(Thread.currentThread().getName());
         // observableFactories.rangeObservable
@@ -280,8 +290,9 @@ public class App {
 
 
         /*
-         * error handling operators
-         * 
+         *  =============================================
+         *  error handling operators
+         *  =============================================
          */
 
         // observableFactories.listObserverable
@@ -310,7 +321,34 @@ public class App {
 
         // new Scanner(System.in).nextLine();
 
-            
+
+
+
+        /*
+         *  =============================================
+         *  threading
+         *  =============================================
+         */
+
+        //  observableFactories.rangeObservable
+        //         .doOnNext(item -> System.out.println(String.format("pushing item %1$s on %2$s thread", item, Thread.currentThread().getName())))
+        //         .subscribeOn(Schedulers.computation()) // use one thread from the schedulers.computation thread pool
+        //         .subscribe(item -> System.out.println(String.format("recieving item %1$s on %2$s thread", item, Thread.currentThread().getName())));
+
+
+        observableFactories.hellowObservable
+            .subscribeOn(Schedulers.io())
+            .doOnNext(item -> System.out.println(String.format("Emitting item on thread %s", Thread.currentThread().getName())))
+            .observeOn(Schedulers.single())
+            .subscribe(item -> System.out.println(String.format("Observing item on thread %s", Thread.currentThread().getName())));
+
+        //prevent main thread from finishing. Wait for background thread to finish
+        try {
+            Thread.sleep(1000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
     }
 }
