@@ -161,26 +161,40 @@ public class App {
         /*
          * transforming operators
          */
+        // observableFactories.rangeObservable
+        //         .sorted()
+        //         .scan((accum, item) -> accum + item)
+        //         .buffer(3)
+        //         .map(String::valueOf)
+        //         .subscribe(item -> System.out.println("item: "+ item));
+
+        // observableFactories.lettersObservable
+        //         .sorted()
+        //         .groupBy(String::length)
+        //         .flatMapSingle(group -> group.toList())
+        //         .subscribe(item -> System.out.println("letter: "+ item));
+
+        // observableFactories.rangeObservable
+        //         .map(item -> item * 2)
+        //         .flatMap(item -> Observable.just(item * 2))
+        //         .toList()
+        //         .subscribe(item -> System.out.println("item: "+ item));
+
+
+        /*
+         * combining operators
+         * 
+         */
         observableFactories.rangeObservable
-                .sorted()
-                .scan((accum, item) -> accum + item)
-                .buffer(3)
-                .map(String::valueOf)
+                .mergeWith(Observable.just(100, 200, 300))
                 .subscribe(item -> System.out.println("item: "+ item));
-
-        observableFactories.lettersObservable
-                .sorted()
-                .groupBy(String::length)
-                .flatMapSingle(group -> group.toList())
-                .subscribe(item -> System.out.println("letter: "+ item));
-
-        observableFactories.rangeObservable
-                .map(item -> item * 2)
-                .flatMap(item -> Observable.just(item * 2))
-                .toList()
-                .subscribe(item -> System.out.println("item: "+ item));
-
-
         
+        System.out.println("=============== zipping ===========");
+        observableFactories.rangeObservable
+                .zipWith(Observable.just(400, 500, 600, 700), (item1, item2) -> {
+                    return String.format("%s%s", item1, item2);
+                })
+                .subscribe(item -> System.out.println("item: "+ item));
+
     }
 }
