@@ -137,26 +137,50 @@ public class App {
 
 
         /*
-         * operators
+         * filtering operators
          */
-        observableFactories.wordsObservable
-                .filter(item -> item.length() != 2)
-                .skip(3)
-                .distinct()
-                .take(2)
-                // .first("emtpy")
-                // .last("emtpy")
-                .subscribe(item -> System.out.println("item: "+ item));
+        // observableFactories.wordsObservable
+        //         .filter(item -> item.length() != 2)
+        //         .skip(3)
+        //         .distinct()
+        //         .take(2)
+        //         // .first("emtpy")
+        //         // .last("emtpy")
+        //         .subscribe(item -> System.out.println("item: "+ item));
 
         
-        observableFactories.numbersObservable
-                    // .takeWhile(item -> item % 2 ==0)
-                    .skipWhile(item -> item < 5)
-                    // .all(item -> item % 2 ==0)
-                    // .any(item -> item % 2 ==0)
-                    .defaultIfEmpty(-9999999)
-                    .switchIfEmpty(Observable.just(1,2,3))
-                    .subscribe(item -> System.out.println("value: "+ item));
+        // observableFactories.numbersObservable
+        //             // .takeWhile(item -> item % 2 ==0)
+        //             .skipWhile(item -> item < 5)
+        //             // .all(item -> item % 2 ==0)
+        //             // .any(item -> item % 2 ==0)
+        //             .defaultIfEmpty(-9999999)
+        //             .switchIfEmpty(Observable.just(1,2,3))
+        //             .subscribe(item -> System.out.println("value: "+ item));
 
+        /*
+         * transforming operators
+         */
+        observableFactories.rangeObservable
+                .sorted()
+                .scan((accum, item) -> accum + item)
+                .buffer(3)
+                .map(String::valueOf)
+                .subscribe(item -> System.out.println("item: "+ item));
+
+        observableFactories.lettersObservable
+                .sorted()
+                .groupBy(String::length)
+                .flatMapSingle(group -> group.toList())
+                .subscribe(item -> System.out.println("letter: "+ item));
+
+        observableFactories.rangeObservable
+                .map(item -> item * 2)
+                .flatMap(item -> Observable.just(item * 2))
+                .toList()
+                .subscribe(item -> System.out.println("item: "+ item));
+
+
+        
     }
 }
