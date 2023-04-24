@@ -8,6 +8,7 @@ import java.util.Scanner;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.SingleObserver;
 import rxjavaintro.completables.CompletableFactories;
+import rxjavaintro.flowables.Flowables;
 import rxjavaintro.observables.ObservableFactories;
 import rxjavaintro.observers.Observers;
 
@@ -31,34 +32,41 @@ public class App {
 
     public static void main(String[] args) {
         // basicObservable();
-        ObservableFactories observableFactories = new ObservableFactories();
-        Observers observers = new Observers();
-        CompletableFactories completableFactories = new CompletableFactories();
+        // ObservableFactories observableFactories = new ObservableFactories();
+        // Observers observers = new Observers();
+        // CompletableFactories completableFactories = new CompletableFactories();
+        Flowables flowables = new Flowables();
 
-        observableFactories.itemObservable.subscribe(observers.itemObserver);
-        observableFactories.listObserverable.subscribe(observers.listObserver);
-        observableFactories.rangeObservable.subscribe(item -> {
-            System.out.println(item);
-        });
+        // observableFactories.itemObservable.subscribe(observers.itemObserver);
+        // observableFactories.listObserverable.subscribe(observers.listObserver);
+        // observableFactories.rangeObservable.subscribe(item -> {
+        //     System.out.println(item);
+        // });
 
         // observableFactories.intervalObservable.subscribe(item -> {
         //     System.out.println(item);
         // });
 
-        observableFactories.timerObservable.subscribe(item -> {
-            System.out.println("5 seconds passed");
-        });
+        // observableFactories.timerObservable.subscribe(item -> {
+        //     System.out.println("5 seconds passed");
+        // });
+        // new Scanner(System.in).nextLine();
+
         
 
-        completableFactories.printCompletable.subscribe(() -> {
-            System.out.println("Action ends");
-        });
+        // completableFactories.printCompletable.subscribe(() -> {
+        //     System.out.println("Action ends");
+        // });
 
-        observableFactories.userSingle.subscribe(observers.userObserver);
+        // observableFactories.userSingle.subscribe(observers.userObserver);
 
-        observableFactories.fileMaybe.subscribe(observers.filMaybeObserver);
+        // observableFactories.fileMaybe.subscribe(observers.filMaybeObserver);
 
-        completableFactories.deleteItemFromDBCompletable.subscribe(observers.dbCompletableObserver);
-        new Scanner(System.in).nextLine();
+        // completableFactories.deleteItemFromDBCompletable.subscribe(observers.dbCompletableObserver);
+        
+        // flowables.synchronousObservableExample();
+        // flowables.asyncObservableExample();
+        flowables.asyncFlowableExample();
+
     }
 }
