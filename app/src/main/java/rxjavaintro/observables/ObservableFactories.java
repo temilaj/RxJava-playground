@@ -15,10 +15,13 @@ public class ObservableFactories {
 
     public Observable<String> itemObservable = Observable.just("item 1", "item 2", "item 3");
 
+    public Observable<String> wordsObservable = Observable.just("Hello", "Hi", "Observable", "World!", "Hello!", "Hello");
     private List<Integer> numbers = new ArrayList<>(Arrays.asList(1,2,3));
     public Observable<Integer> listObserverable = Observable.fromIterable(numbers);
 
     public Observable<Integer> rangeObservable = Observable.range(2, 5);
+    public Observable<Integer> numbersObservable = Observable.range(0, 20);
+
     public Observable<Long> intervalObservable = Observable.interval(1, TimeUnit.SECONDS);
     public Observable<Long> timerObservable = Observable.timer(5, TimeUnit.SECONDS);
 

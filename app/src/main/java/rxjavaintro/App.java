@@ -120,19 +120,43 @@ public class App {
         // }
         // new Scanner(System.in).nextLine();
 
-        CompositeDisposable compositeDisposable = new CompositeDisposable();
-        Observer<Integer> disposableObserver = observers.createDisposableObserver(compositeDisposable);
-        observableFactories.rangeObservable.subscribe(disposableObserver);
-        System.out.println(" disposableObserver calling dipose");
-        compositeDisposable.dispose();
+        // CompositeDisposable compositeDisposable = new CompositeDisposable();
+        // Observer<Integer> disposableObserver = observers.createDisposableObserver(compositeDisposable);
+        // observableFactories.rangeObservable.subscribe(disposableObserver);
+        // System.out.println(" disposableObserver calling dipose");
+        // compositeDisposable.dispose();
 
-        observableFactories.intervalObservable.subscribe(observers.itemResourceObserver);
-        if (observers.itemResourceObserver.isDisposed()) {
-            System.out.println("itemResourceObserver calling dispose");
-            observers.itemResourceObserver.dispose();
-        }
-        new Scanner(System.in).nextLine();
+        // observableFactories.intervalObservable.subscribe(observers.itemResourceObserver);
+        // if (observers.itemResourceObserver.isDisposed()) {
+        //     System.out.println("itemResourceObserver calling dispose");
+        //     observers.itemResourceObserver.dispose();
+        // }
+        // new Scanner(System.in).nextLine();
 
+
+
+
+        /*
+         * operators
+         */
+        observableFactories.wordsObservable
+                .filter(item -> item.length() != 2)
+                .skip(3)
+                .distinct()
+                .take(2)
+                // .first("emtpy")
+                // .last("emtpy")
+                .subscribe(item -> System.out.println("item: "+ item));
+
+        
+        observableFactories.numbersObservable
+                    // .takeWhile(item -> item % 2 ==0)
+                    .skipWhile(item -> item < 5)
+                    // .all(item -> item % 2 ==0)
+                    // .any(item -> item % 2 ==0)
+                    .defaultIfEmpty(-9999999)
+                    .switchIfEmpty(Observable.just(1,2,3))
+                    .subscribe(item -> System.out.println("value: "+ item));
 
     }
 }
