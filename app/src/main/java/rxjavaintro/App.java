@@ -13,10 +13,13 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.observables.ConnectableObservable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import io.reactivex.rxjava3.subjects.PublishSubject;
+import io.reactivex.rxjava3.subjects.Subject;
 import rxjavaintro.completables.CompletableFactories;
 import rxjavaintro.flowables.Flowables;
 import rxjavaintro.observables.ObservableFactories;
 import rxjavaintro.observers.Observers;
+import rxjavaintro.subjects.SubjectFactories;
 
 public class App {
     public static void basicObservable() {
@@ -42,6 +45,7 @@ public class App {
         Observers observers = new Observers();
         CompletableFactories completableFactories = new CompletableFactories();
         Flowables flowables = new Flowables();
+        SubjectFactories subjectFactories = new SubjectFactories();
 
         // observableFactories.itemObservable.subscribe(observers.itemObserver);
         // observableFactories.listObserverable.subscribe(observers.listObserver);
@@ -111,6 +115,8 @@ public class App {
         // connectableObservable.subscribe((item) -> System.out.println(String.format("Observer 3, sec: %s", item)));
         // new Scanner(System.in).nextLine();
 
+
+
         /*
          * Disposing observables with disposables
          */
@@ -137,9 +143,62 @@ public class App {
 
 
 
-
         /*
-         * filtering operators
+         *  =============================================
+         *  =  Subjects
+         *  =============================================
+         */
+        // subscribe to the publish subject object
+        // subjectFactories.intervalPublishSubject.subscribe(item -> System.out.println("Received subject item: "+ item));
+
+        // // add sources fo the published subject
+        // observableFactories.intervalObservable.subscribe(subjectFactories.intervalPublishSubject);
+        // observableFactories.intervalObservable2.subscribe(subjectFactories.intervalPublishSubject);
+        // try {
+        //     Thread.sleep(10000);
+        // } catch (Exception e) {
+        //     e.printStackTrace();
+        // }
+        // new Scanner(System.in).nextLine();
+
+
+
+        // subjectFactories.numbersBehaviourSubject.subscribe(item -> System.out.println("Person 1 listening to song number: "+ item));
+        // subjectFactories.numbersBehaviourSubject.onNext(1);
+        // subjectFactories.numbersBehaviourSubject.onNext(2);
+        // subjectFactories.numbersBehaviourSubject.onNext(3);
+        // subjectFactories.numbersBehaviourSubject.subscribe(item -> System.out.println("Person 2 listening to song number: "+ item));
+
+
+
+        // subjectFactories.numbersReplaySubject.subscribe(item -> System.out.println("Person 1 listening to song number: "+ item));
+        // subjectFactories.numbersReplaySubject.onNext(1);
+        // subjectFactories.numbersReplaySubject.onNext(2);
+        // subjectFactories.numbersReplaySubject.onNext(3);
+        // subjectFactories.numbersReplaySubject.subscribe(item -> System.out.println("Person 2 listening to song number: "+ item));
+
+
+
+        subjectFactories.numbersAsyncSubject.subscribe(item -> System.out.println("Person 1 listening to song number: "+ item));
+        subjectFactories.numbersAsyncSubject.onNext(1);
+        subjectFactories.numbersAsyncSubject.onNext(2);
+        subjectFactories.numbersAsyncSubject.onNext(3);
+        subjectFactories.numbersAsyncSubject.subscribe(item -> System.out.println("Person 2 listening to song number: "+ item));
+        subjectFactories.numbersAsyncSubject.onNext(4);
+
+        subjectFactories.numbersAsyncSubject.onComplete();
+
+        
+
+        new Scanner(System.in).nextLine();
+
+
+        
+
+         /*
+         *  =============================================
+         *  filtering operators
+         *  =============================================
          */
         // observableFactories.wordsObservable
         //         .filter(item -> item.length() != 2)
@@ -225,31 +284,31 @@ public class App {
          * 
          */
 
-        observableFactories.listObserverable
-                    .sorted((item1, item2) -> item2 - item1)
-                    .map(item -> 2/item)
-                    .retry(1)
-                    .subscribe(item -> {
-                        System.out.println("item: "+ item);
-                    }, throwable -> System.out.println(throwable.getMessage()));
+        // observableFactories.listObserverable
+        //             .sorted((item1, item2) -> item2 - item1)
+        //             .map(item -> 2/item)
+        //             .retry(1)
+        //             .subscribe(item -> {
+        //                 System.out.println("item: "+ item);
+        //             }, throwable -> System.out.println(throwable.getMessage()));
 
-        observableFactories.listObserverable
-                    .sorted((item1, item2) -> item2 - item1)
-                    .map(item -> 2/item)
-                    .onErrorReturnItem(-9999)
-                    .subscribe(item -> {
-                        System.out.println("item: "+ item);
-                    });
+        // observableFactories.listObserverable
+        //             .sorted((item1, item2) -> item2 - item1)
+        //             .map(item -> 2/item)
+        //             .onErrorReturnItem(-9999)
+        //             .subscribe(item -> {
+        //                 System.out.println("item: "+ item);
+        //             });
 
-        observableFactories.listObserverable
-                    .sorted((item1, item2) -> item2 - item1)
-                    .map(item -> 2/item)
-                    .onErrorResumeWith(Observable.just(5,6,7))
-                    .subscribe(item -> {
-                        System.out.println("item: "+ item);
-                    });
+        // observableFactories.listObserverable
+        //             .sorted((item1, item2) -> item2 - item1)
+        //             .map(item -> 2/item)
+        //             .onErrorResumeWith(Observable.just(5,6,7))
+        //             .subscribe(item -> {
+        //                 System.out.println("item: "+ item);
+        //             });
 
-        new Scanner(System.in).nextLine();
+        // new Scanner(System.in).nextLine();
 
             
 

@@ -24,6 +24,7 @@ public class ObservableFactories {
     public Observable<Integer> numbersObservable = Observable.range(0, 20);
 
     public Observable<Long> intervalObservable = Observable.interval(1, TimeUnit.SECONDS);
+    public Observable<Long> intervalObservable2 = Observable.interval(1, TimeUnit.SECONDS);
     public Observable<Long> timerObservable = Observable.timer(5, TimeUnit.SECONDS);
 
 
