@@ -4,6 +4,7 @@
 package rxjavaintro;
 
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
@@ -11,6 +12,7 @@ import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.observables.ConnectableObservable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import rxjavaintro.completables.CompletableFactories;
 import rxjavaintro.flowables.Flowables;
 import rxjavaintro.observables.ObservableFactories;
@@ -185,16 +187,38 @@ public class App {
          * combining operators
          * 
          */
-        observableFactories.rangeObservable
-                .mergeWith(Observable.just(100, 200, 300))
-                .subscribe(item -> System.out.println("item: "+ item));
+        // observableFactories.rangeObservable
+        //         .mergeWith(Observable.just(100, 200, 300))
+        //         .subscribe(item -> System.out.println("item: "+ item));
         
-        System.out.println("=============== zipping ===========");
+        // System.out.println("=============== zipping ===========");
+        // observableFactories.rangeObservable
+        //         .zipWith(Observable.just(400, 500, 600, 700), (item1, item2) -> {
+        //             return String.format("%s%s", item1, item2);
+        //         })
+        //         .subscribe(item -> System.out.println("item: "+ item));
+
+        
+        /*
+         * utlitity operators
+         * 
+         */
+        System.out.println(Thread.currentThread().getName());
         observableFactories.rangeObservable
-                .zipWith(Observable.just(400, 500, 600, 700), (item1, item2) -> {
-                    return String.format("%s%s", item1, item2);
-                })
-                .subscribe(item -> System.out.println("item: "+ item));
+                .delay(2, TimeUnit.SECONDS)
+                // .timeout(1, TimeUnit.SECONDS)
+                // .subscribeOn(Schedulers.newThread()) // change the thread we produce items
+                // .observeOn(Schedulers.newThread()) // change the thread on which we observe items
+                .map(String::valueOf)
+                .doOnNext(item -> System.out.println("dispose called"))
+                // .doOnDispose(item ->System.out.println("new item recived" + item))
+                .subscribe(item -> {
+                    System.out.println(Thread.currentThread().getName());
+                    System.out.println("item: "+ item);
+                });
+        new Scanner(System.in).nextLine();
+
+            
 
     }
 }
